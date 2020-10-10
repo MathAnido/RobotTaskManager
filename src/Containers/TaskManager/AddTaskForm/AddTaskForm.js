@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useStore } from '../../Store/Store';
-import Button from '../../Components/UI/Button/Button';
+import { useStore } from '../../../Store/Store';
+import Button from '../../../Components/UI/Button/Button';
 import './AddTaskForm.css';
 
 const AddTaskForm = () => {

@@ -1,14 +1,16 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import TaskList from './Components/UI/TaskList/TaskList';
-import AddTaskForm from './Containers/AddTaskForm/AddTaskForm';
+import PSOViewer from './Containers/PSOViewer/PSOViewer';
+import TaskManager from './Containers/TaskManager/TaskManager';
 
 function App() {
   return (
     <div className="App">
-      <AddTaskForm/>
-      <br />
-      <TaskList/>
+      <Switch>
+        <Route path="/" exact component={TaskManager} />
+        <Route path="/pso" component={PSOViewer} />
+      </Switch>
     </div>
   );
 }
