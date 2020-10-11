@@ -1,7 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useState } from 'react';
 import './PSOViewer.css';
 const PSOViewer = () => {
-  const initPopulation = (size) => {
+  const [pontos, setPontos] = useState([]);
+  const [pontoFinal, setPontoFinal] = useState({ x: -20, y: 50 });
+
+  const initPopulation = useCallback((size) => {
     let pop = [];
     pop.push({
       //Posicao do Robo
@@ -24,25 +27,15 @@ const PSOViewer = () => {
       });
     }
     return pop;
-  };
+  }, []);
 
   const initHandler = useCallback(() => {
-    pontos = initPopulation(11);
-    for (let part of pontos) {
-      changePosition(part.id, part.sx, part.sy);
-    }
-    pontoFinal = { x: Math.random() * 800, y: Math.random() * 600 };
-    changePosition('final', pontoFinal.x, pontoFinal.y);
-  }, [initPopulation]);
+    let newPop = initPopulation(11);
+    setPontos(newPop);
 
-  useEffect(() => initHandler, [initHandler]);
-  const changePosition = (id, x, y) => {
-    let rectSVG = document.getElementById(id);
-    rectSVG.setAttributeNS(null, 'x', x);
-    rectSVG.setAttributeNS(null, 'y', y);
-  };
-  let pontos = null;
-  let pontoFinal = { x: Math.random() * 800, y: Math.random() * 600 };
+    let final = { x: Math.random() * 800, y: Math.random() * 600 };
+    setPontoFinal(final);
+  }, [initPopulation]);
 
   const psoStep = () => {
     pso(pontoFinal);
@@ -64,9 +57,10 @@ const PSOViewer = () => {
     let c2 = 2.05;
     let w = 0.5;
     let j = 0;
+    let population = pontos.slice();
     do {
       //gBest.fitness = 999;
-      for (let part of pontos) {
+      for (let part of population) {
         let partFit = fitness(part, pontoFinal);
         if (partFit <= part.pBest.fitness) {
           part.pBest.x = part.sx;
@@ -79,7 +73,7 @@ const PSOViewer = () => {
           gBest.fitness = partFit;
         }
       }
-      for (let part of pontos) {
+      for (let part of population) {
         part.vx =
           w * part.vx +
           c1 * Math.random() * (part.pBest.x - part.sx) +
@@ -90,11 +84,10 @@ const PSOViewer = () => {
           c2 * Math.random() * (gBest.y - part.sy);
         part.sx = part.sx + part.vx;
         part.sy = part.sy + part.vy;
-        changePosition(part.id, part.sx, part.sy);
       }
+      setPontos(population);
       j++;
     } while (j < 5);
-    // } while (fitness(pontos[0], pontoFinal) > 0.1);
   };
 
   const pso2 = (pontoFinal) => {
@@ -102,9 +95,10 @@ const PSOViewer = () => {
     let c1 = 2.05;
     let c2 = 2.05;
     let w = 0.5;
+    let population = pontos.slice();
     do {
       //gBest.fitness = 999;
-      for (let part of pontos) {
+      for (let part of population) {
         let partFit = fitness(part, pontoFinal);
         if (partFit <= part.pBest.fitness) {
           part.pBest.x = part.sx;
@@ -117,7 +111,7 @@ const PSOViewer = () => {
           gBest.fitness = partFit;
         }
       }
-      for (let part of pontos) {
+      for (let part of population) {
         part.vx =
           w * part.vx +
           c1 * Math.random() * (part.pBest.x - part.sx) +
@@ -128,14 +122,38 @@ const PSOViewer = () => {
           c2 * Math.random() * (gBest.y - part.sy);
         part.sx = part.sx + part.vx;
         part.sy = part.sy + part.vy;
-        changePosition(part.id, part.sx, part.sy);
+        //changePosition(part.id, part.sx, part.sy);
       }
+      setPontos(population);
     } while (fitness(pontos[0], pontoFinal) > 0.1);
   };
 
-  function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+  let list = null;
+  let destino = null;
+  if (pontos.length) {
+    list = pontos.map((pkey) => {
+      return (
+        <rect
+          id={pkey.id}
+          x={pkey.sx}
+          y={pkey.sy}
+          width="10"
+          height="10"
+          key={pkey.id}
+        />
+      );
+    });
+    destino = (
+      <rect
+        id="final"
+        x={pontoFinal.x}
+        y={pontoFinal.y}
+        width="10"
+        height="10"
+      />
+    );
   }
+
   return (
     <>
       <div>
@@ -176,32 +194,20 @@ const PSOViewer = () => {
           <line x1="0" y1="499.5" x2="800" y2="499.5" />
           <line x1="0" y1="549.5" x2="800" y2="549.5" />
           <line x1="0" y1="599.5" x2="800" y2="599.5" />
-
-          <rect id="robo" x="20" y="50" width="10" height="10" />
-          <rect id="bird1" x="20" y="50" width="10" height="10" />
-          <rect id="bird2" x="20" y="50" width="10" height="10" />
-          <rect id="bird3" x="20" y="50" width="10" height="10" />
-          <rect id="bird4" x="20" y="50" width="10" height="10" />
-          <rect id="bird5" x="20" y="50" width="10" height="10" />
-          <rect id="bird6" x="20" y="50" width="10" height="10" />
-          <rect id="bird7" x="20" y="50" width="10" height="10" />
-          <rect id="bird8" x="20" y="50" width="10" height="10" />
-          <rect id="bird9" x="20" y="50" width="10" height="10" />
-          <rect id="bird10" x="20" y="50" width="10" height="10" />
-
-          <rect
-            id="final"
-            x={pontoFinal.x}
-            y={pontoFinal.y}
-            width="10"
-            height="10"
-          />
+          {list}
+          {destino}
         </svg>
       </div>
       <div>
-        <button onClick={initHandler}>Reinicializar</button>
+        <button onClick={initHandler}>Inicializar</button>
         <button onClick={psoStep}>Step</button>
         <button onClick={psoStart}>PSO</button>
+      </div>
+      <div>
+        <p>{pontos && pontos.length ? 'Vx: ' + pontos[0].vx : null}</p>
+        <p>{pontos && pontos.length ? 'Vy: ' + pontos[0].vy : null}</p>
+        <p>{pontos && pontos.length ? 'Sx: ' + pontos[0].sx : null}</p>
+        <p>{pontos && pontos.length ? 'Sy: ' + pontos[0].sy : null}</p>
       </div>
     </>
   );
