@@ -1,0 +1,26 @@
+line {
+  stroke: #bbe4ba;
+}
+
+rect {
+  fill: #424242;
+  fill-opacity: 0.4;
+  stroke: #424242;
+  stroke-width: 5px;
+  transition: all 0.5s;
+}
+
+rect#final {
+  fill: green;
+  stroke: green;
+}
+
+rect#robo {
+  fill: blue;
+  stroke: blue;
+}
+
+label {
+  display: block;
+  margin: 10px;
+}
