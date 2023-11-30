@@ -120,14 +120,16 @@ const Bspline = (x, y, duration, tsEvals) => {
   return centro
 }
 
-export const interpolacao = (xp, yp, flag) => {
+const interpolacao = (xp, yp, flag) => {
   const numPontos = 200
   let centro = []
-  if (flag == 1) {
+  if (flag === 1) {
     centro = Bspline(xp, yp, 5, numPontos)
   } else {
     //centro = Reta(xp, yp, numPontos)
   }
   return centro
 }
+
+export default interpolacao
 

@@ -1,6 +1,6 @@
 import { zeros, add } from 'mathjs'
 const { random } = Math
-export const PSO = (fitness, N, c1, c2, w, M, D, P0) => {
+const PSO = (fitness, N, c1, c2, w, M, D, P0) => {
   let x = zeros([N, D])
   let v = zeros([N, D])
   let pBest = zeros([N, D])
@@ -52,3 +52,5 @@ export const PSO = (fitness, N, c1, c2, w, M, D, P0) => {
     gBestScore 
   }
 }
+
+export default PSO

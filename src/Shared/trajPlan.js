@@ -1,7 +1,7 @@
 
 import trajOtimo from './trajOtimo'
 const degtorad = deg => (deg * Math.PI) / 180.0
-export const TrajPlan = (Pi, Pf, obstaculo = []) => {
+const TrajPlan = (Pi, Pf, obstaculo = []) => {
   let numPontos = 1
   let splineLinear = 1
   let particulas = 20
@@ -39,4 +39,7 @@ export const TrajPlan = (Pi, Pf, obstaculo = []) => {
     i++;
   } while (i < 5 || result.fVal !== -1)
   //plotar o robo
+  return result
 }
+
+export default TrajPlan

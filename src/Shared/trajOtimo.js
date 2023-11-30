@@ -4,12 +4,12 @@ import PSO from './pso'
 import pointsToTraj from './pointsToTraj'
 const { cos, sin } = Math
 const offsetTrajetoria = 500
-export const trajOtimo = (Pi, Pf, pontos, flag, obstaculo, particulas, iteracao) => {
+const trajOtimo = (Pi, Pf, pontos, flag, obstaculo, particulas, iteracao) => {
   const nVars = pontos * 2
 
-  if(Pi.theta == 2 * Math.PI) Pi.theta = 0
-  Pf.theta = Pf.theta + Math.PI
-  if(Pf.theta == 2 * Math.PI) Pf.theta = 0
+  if(Pi.theta === 2 * Math.PI) Pi.theta = 0
+  Pf.theta += Math.PI
+  if(Pf.theta === 2 * Math.PI) Pf.theta = 0
 
   const pontosX = linspace(
     offsetTrajetoria * cos(Pi.theta) + Pi.x,
@@ -47,3 +47,5 @@ export const trajOtimo = (Pi, Pf, pontos, flag, obstaculo, particulas, iteracao)
     fVal: fVal > 10000 ? -1 : fVal,
   }
 }
+
+export default trajOtimo

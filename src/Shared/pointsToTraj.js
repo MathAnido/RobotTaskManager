@@ -2,7 +2,7 @@ import interpolacao from './interpolacao'
 const { cos, sin } = Math
 const offsetTrajetoria = 500
 const bracoOffset = 260
-export const pointsToTraj = (p, Pi, Pf, flag, nVars) => {
+const pointsToTraj = (p, Pi, Pf, flag, nVars) => {
   const xp = [
     Pi.x,
     offsetTrajetoria * cos(Pi.theta) + Pi.x,
@@ -31,3 +31,5 @@ export const pointsToTraj = (p, Pi, Pf, flag, nVars) => {
     garra,
   }
 }
+
+export default pointsToTraj

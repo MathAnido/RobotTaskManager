@@ -6,7 +6,7 @@ const PSOViewer = () => {
   const [pontos, setPontos] = useState([])
   const [pontoFinal, setPontoFinal] = useState({ x: -20, y: 50 })
   const [globalCoords, setGlobalCoords] = useState({ x: 0, y: 0 })
-  const [localCoords, setLocalCoords] = useState({ x: 0, y: 0 })
+  const [localCoords] = useState({ x: 0, y: 0 })
 
   const initPopulation = useCallback((size) => {
     let pop = []

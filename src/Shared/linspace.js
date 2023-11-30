@@ -1,4 +1,4 @@
-export const linspace = (startValue, stopValue, cardinality) => {
+const linspace = (startValue, stopValue, cardinality) => {
   var arr = []
   var step = (stopValue - startValue) / (cardinality - 1)
   for (var i = 0; i < cardinality; i++) {
@@ -6,3 +6,5 @@ export const linspace = (startValue, stopValue, cardinality) => {
   }
   return arr
 }
+
+export default linspace

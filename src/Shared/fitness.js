@@ -3,7 +3,7 @@ import { sqrt, pow, sum } from 'mathjs'
 const { cos, sin, min, max } = Math
 const offsetTrajetoria = 500
 const bracoOffset = 260
-export const fitness = (p, Pi, Pf, flag, nVars, obstaculos) => {
+const fitness = (p, Pi, Pf, flag, nVars, obstaculos) => {
   let score = 0
   const xp = [
     Pi.x,
@@ -20,6 +20,7 @@ export const fitness = (p, Pi, Pf, flag, nVars, obstaculos) => {
     Pf.y,
   ]
   const centro = interpolacao(xp, yp, flag)
+  console.log(centro)
   const diff = []
   const diffTheta = []
   for (let i = 0; i < centro.length - 1; i++) {
@@ -65,3 +66,5 @@ export const fitness = (p, Pi, Pf, flag, nVars, obstaculos) => {
   })
   return score + max(coisa)
 }
+
+export default fitness
