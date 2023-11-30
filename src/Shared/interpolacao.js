@@ -5,8 +5,7 @@ import {
   dotDivide,
   dotMultiply,
   add,
-  multiply,
-  divide,
+  multiply
 } from 'mathjs'
 import linspace from './linspace'
 const { floor } = Math
@@ -23,83 +22,89 @@ const Bspline = (x, y, duration, tsEvals) => {
   let Dpys = zeros([(n + 1) * ts - n])
   let pxs = zeros([(n + 1) * ts - n])
   let Dpxs = zeros([(n + 1) * ts - n])
-  let numPonts = 1
+  let numPonts = 0
 
   for (let i = 0; i < n + 1; i++) {
     const Cy = add(
-      divide(
-        multiply(
+      dotDivide(
+        dotMultiply(
           add(dotMultiply(uuu, -1), dotMultiply(uu, 3), dotMultiply(u, -3), 1),
           yy[i]
         ),
         6
       ),
-      divide(
-        multiply(add(dotMultiply(uuu, 3), dotMultiply(uu, -6), 4), yy[i + 1]),
+      dotDivide(
+        dotMultiply(add(dotMultiply(uuu, 3), dotMultiply(uu, -6), 4), yy[i + 1]),
         6
       ),
-      divide(
-        multiply(
+      dotDivide(
+        dotMultiply(
           add(dotMultiply(uuu, -3), dotMultiply(uu, 3), dotMultiply(u, 3), 1),
           yy[i + 2]
         ),
         6
       ),
-      divide(multiply(uuu, yy[i + 3]), 6)
+      dotDivide(multiply(uuu, yy[i + 3]), 6)
     )
     pys.splice(numPonts, ts, ...Cy)
+
+
     const DCy = add(
-      divide(
-        multiply(add(dotMultiply(uu, -1), dotMultiply(u, 2), -1), yy[i]),
+      dotDivide(
+        dotMultiply(add(dotMultiply(uu, -1), dotMultiply(u, 2), -1), yy[i]),
         2
       ),
-      divide(
-        multiply(add(dotMultiply(uu, 9), dotMultiply(u, -12)), yy[i + 1]),
+      dotDivide(
+        dotMultiply(add(dotMultiply(uu, 9), dotMultiply(u, -12)), yy[i + 1]),
         6
       ),
-      divide(
-        multiply(add(dotMultiply(uu, -9), dotMultiply(u, 6), 3), yy[i + 2]),
+      dotDivide(
+        dotMultiply(add(dotMultiply(uu, -9), dotMultiply(u, 6), 3), yy[i + 2]),
         6
       ),
-      divide(multiply(uu, yy[i + 3]), 2)
+      dotDivide(dotMultiply(uu, yy[i + 3]), 2)
     )
     Dpys.splice(numPonts, ts, ...DCy)
+
+
     const Cx = add(
-      divide(
-        multiply(
+      dotDivide(
+        dotMultiply(
           add(dotMultiply(uuu, -1), dotMultiply(uu, 3), dotMultiply(u, -3), 1),
           xx[i]
         ),
         6
       ),
-      divide(
-        multiply(add(dotMultiply(uuu, 3), dotMultiply(uu, -6), 4), xx[i + 1]),
+      dotDivide(
+        dotMultiply(add(dotMultiply(uuu, 3), dotMultiply(uu, -6), 4), xx[i + 1]),
         6
       ),
-      divide(
-        multiply(
+      dotDivide(
+        dotMultiply(
           add(dotMultiply(uuu, -3), dotMultiply(uu, 3), dotMultiply(u, 3), 1),
           xx[i + 2]
         ),
         6
       ),
-      divide(multiply(uuu, xx[i + 3]), 6)
+      dotDivide(dotMultiply(uuu, xx[i + 3]), 6)
     )
     pxs.splice(numPonts, ts, ...Cx)
+
+
     const DCx = add(
-      divide(
-        multiply(add(dotMultiply(uu, -1), dotMultiply(u, 2), -1), xx[i]),
+      dotDivide(
+        dotMultiply(add(dotMultiply(uu, -1), dotMultiply(u, 2), -1), xx[i]),
         2
       ),
-      divide(
-        multiply(add(dotMultiply(uu, 9), dotMultiply(u, -12)), xx[i + 1]),
+      dotDivide(
+        dotMultiply(add(dotMultiply(uu, 9), dotMultiply(u, -12)), xx[i + 1]),
         6
       ),
-      divide(
-        multiply(add(dotMultiply(uu, -9), dotMultiply(u, 6), 3), xx[i + 2]),
+      dotDivide(
+        dotMultiply(add(dotMultiply(uu, -9), dotMultiply(u, 6), 3), xx[i + 2]),
         6
       ),
-      divide(multiply(uu, xx[i + 3]), 2)
+      dotDivide(dotMultiply(uu, xx[i + 3]), 2)
     )
     Dpxs.splice(numPonts, ts, ...DCx)
     numPonts += ts - 1
@@ -117,6 +122,7 @@ const Bspline = (x, y, duration, tsEvals) => {
       theta: theta[i],
     })
   }
+  centro[(n + 1) * ts - n - 1].theta = centro[(n + 1) * ts - n - 2].theta
   return centro
 }
 

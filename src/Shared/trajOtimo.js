@@ -6,7 +6,6 @@ const { cos, sin } = Math
 const offsetTrajetoria = 500
 const trajOtimo = (Pi, Pf, pontos, flag, obstaculo, particulas, iteracao) => {
   const nVars = pontos * 2
-
   if(Pi.theta === 2 * Math.PI) Pi.theta = 0
   Pf.theta += Math.PI
   if(Pf.theta === 2 * Math.PI) Pf.theta = 0

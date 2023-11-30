@@ -20,7 +20,6 @@ const fitness = (p, Pi, Pf, flag, nVars, obstaculos) => {
     Pf.y,
   ]
   const centro = interpolacao(xp, yp, flag)
-  console.log(centro)
   const diff = []
   const diffTheta = []
   for (let i = 0; i < centro.length - 1; i++) {
@@ -35,13 +34,17 @@ const fitness = (p, Pi, Pf, flag, nVars, obstaculos) => {
   })
   score += sum(ds)
   score += sum(diffTheta)
-
   for (const obstaculo of obstaculos) {
+    console.log(obstaculo)
     const dist = centro.map(({ x, y }) => {
       return sqrt(pow(x - obstaculo.x, 2) + pow(y - obstaculo.y, 2))
-    })
-    if (min(dist) < obstaculo.radius + bracoOffset) {
-      score += min(dist) * 10000
+    }).map(x => x || 0)
+    const minDist = min(dist)
+    if (minDist < obstaculo.radius + bracoOffset) {
+      score += minDist * 10000
+      if(minDist === 0) {
+        score += 100000
+      }
     }
   }
 
@@ -55,7 +58,7 @@ const fitness = (p, Pi, Pf, flag, nVars, obstaculos) => {
   if (minY < 0) score -= minY * 10000
 
   const dd = []
-  for (let i = 2; i < nVars / 2 + 3; i++) {
+  for (let i = 1; i < nVars / 2 + 3; i++) {
     dd.push({
       x: xp[i + 1] - xp[i],
       y: yp[i + 1] - yp[i],
