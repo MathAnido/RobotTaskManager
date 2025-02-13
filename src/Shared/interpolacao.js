@@ -8,6 +8,7 @@ import {
   multiply
 } from 'mathjs'
 import linspace from './linspace'
+import useStore from '../Store/Store'
 const { floor } = Math
 
 const Bspline = (x, y, duration, tsEvals) => {
@@ -48,7 +49,6 @@ const Bspline = (x, y, duration, tsEvals) => {
     )
     pys.splice(numPonts, ts, ...Cy)
 
-
     const DCy = add(
       dotDivide(
         dotMultiply(add(dotMultiply(uu, -1), dotMultiply(u, 2), -1), yy[i]),
@@ -65,7 +65,6 @@ const Bspline = (x, y, duration, tsEvals) => {
       dotDivide(dotMultiply(uu, yy[i + 3]), 2)
     )
     Dpys.splice(numPonts, ts, ...DCy)
-
 
     const Cx = add(
       dotDivide(
@@ -89,7 +88,6 @@ const Bspline = (x, y, duration, tsEvals) => {
       dotDivide(dotMultiply(uuu, xx[i + 3]), 6)
     )
     pxs.splice(numPonts, ts, ...Cx)
-
 
     const DCx = add(
       dotDivide(
@@ -127,7 +125,7 @@ const Bspline = (x, y, duration, tsEvals) => {
 }
 
 const interpolacao = (xp, yp, flag) => {
-  const numPontos = 200
+  const numPontos = useStore.getState().numInterpolacao
   let centro = []
   if (flag === 1) {
     centro = Bspline(xp, yp, 5, numPontos)

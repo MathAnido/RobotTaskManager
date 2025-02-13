@@ -6,7 +6,7 @@ const ListEntry = (props) => {
       <td>{props.number}</td>
       <td>{props.x}</td>
       <td>{props.y}</td>
-      <td>{props.radius}</td>
+      {/* <td>{props.radius}</td> */}
       <td>
         <Button clicked={() => props.onRemove()} value="X" />
       </td>

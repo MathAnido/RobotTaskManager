@@ -1,8 +1,7 @@
 
 import trajOtimo from './trajOtimo'
 const degtorad = deg => (deg * Math.PI) / 180.0
-const TrajPlan = (Pi, Pf, obstaculo = []) => {
-  let numPontos = 1
+const TrajPlan = (Pi, Pf, obstaculo = [], numPontos = 1, offsetTrajetoria) => {
   let splineLinear = 1
   let particulas = 20
   let iteracao = 50
@@ -18,27 +17,22 @@ const TrajPlan = (Pi, Pf, obstaculo = []) => {
       splineLinear,
       obstaculo,
       particulas,
-      iteracao
+      iteracao,
+      offsetTrajetoria,
     )
-    const { fval } = result
-    if (fval === -1) {
+    if (result.collisionCount > 0) {
       if (i === 2) {
         particulas += 30
         iteracao += 20
       } else if (i === 3) {
         particulas += 50
         iteracao += 30
-      } else if (i === 4) {
-        console.log(
-          'Posicao inicial ou final ou trajetoria em pontos proibidos'
-        )
       }
     } else {
-      break;
+      break
     }
-    i++;
-  } while (i < 5 || result.fVal !== -1)
-  //plotar o robo
+    i++
+  } while (i < 20)
   return result
 }
 

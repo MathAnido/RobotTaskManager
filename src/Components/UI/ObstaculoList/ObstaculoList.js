@@ -24,21 +24,22 @@ const ObstaculoList = (props) => {
     list = (
       <tr>
         <td colSpan="4">
-          <h4>Não há obstaculos</h4>
+          <h4>Não há obstáculos</h4>
         </td>
       </tr>
     );
   }
   return (
     <div>
-      <h3>Obstaculos:</h3>
+      <h3>Obstáculos:</h3>
       <table>
         <thead>
           <tr>
             <th>#</th>
             <th>X</th>
             <th>Y</th>
-            <th>Raio</th>
+            {/* <th>Raio</th> */}
+            <th></th>
           </tr>
         </thead>
         <tbody>{list}</tbody>

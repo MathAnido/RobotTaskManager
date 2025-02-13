@@ -1,28 +1,40 @@
 import interpolacao from './interpolacao'
-import { sqrt, pow, sum } from 'mathjs'
-const { cos, sin, min, max } = Math
-const offsetTrajetoria = 500
+import { sqrt, pow, sum, min, max } from 'mathjs'
+const { cos, sin, abs } = Math
 const bracoOffset = 260
-const fitness = (p, Pi, Pf, flag, nVars, obstaculos) => {
-  let score = 0
-  const xp = [
+const PENALTY = 10000
+const fitness = (p, Pi, Pf, flag, nVars, obstaculos, offsetTrajetoria) => {
+  let score = 0.0
+
+  let xp = []
+  let yp = []
+  for(let i = 0; i < nVars; i += 2) {
+    xp.push(p[i])
+    yp.push(p[i+1])
+  }
+
+  xp = [
     Pi.x,
     offsetTrajetoria * cos(Pi.theta) + Pi.x,
-    p[0],
+    ...xp,
     offsetTrajetoria * cos(Pf.theta) + Pf.x,
     Pf.x,
   ]
-  const yp = [
+  yp = [
     Pi.y,
     offsetTrajetoria * sin(Pi.theta) + Pi.y,
-    p[1],
+    ...yp,
     offsetTrajetoria * sin(Pf.theta) + Pf.y,
     Pf.y,
   ]
   const centro = interpolacao(xp, yp, flag)
   const diff = []
   const diffTheta = []
+  const centroX = []
+  const centroY = []
   for (let i = 0; i < centro.length - 1; i++) {
+    centroX.push(centro[i].x)
+    centroY.push(centro[i].y)
     diff.push({
       x: centro[i + 1].x - centro[i].x,
       y: centro[i + 1].y - centro[i].y,
@@ -33,41 +45,36 @@ const fitness = (p, Pi, Pf, flag, nVars, obstaculos) => {
     return sqrt(pow(x, 2) + pow(y, 2))
   })
   score += sum(ds)
-  score += sum(diffTheta)
-  for (const obstaculo of obstaculos) {
-    console.log(obstaculo)
+  score += sum(diffTheta.map(x => abs(x))) //
+  let collisionCount = 0
+  
+  for (let obstaculo of obstaculos) {
     const dist = centro.map(({ x, y }) => {
       return sqrt(pow(x - obstaculo.x, 2) + pow(y - obstaculo.y, 2))
-    }).map(x => x || 0)
-    const minDist = min(dist)
-    if (minDist < obstaculo.radius + bracoOffset) {
-      score += minDist * 10000
-      if(minDist === 0) {
-        score += 100000
+    })
+    for (let d of dist) {
+      if (d <= obstaculo.radius + bracoOffset) {
+        score += PENALTY
+        collisionCount+= 1
       }
     }
   }
 
-  const maxX = max(xp)
-  const minX = min(xp)
-  const maxY = max(yp)
-  const minY = min(yp)
-  if (maxX > 4000) score += (maxX - 4000) * 10000
-  if (minX < 0) score -= minX * 10000
-  if (maxY > 3000) score += (maxY - 3000) * 10000
-  if (minY < 0) score -= minY * 10000
+ 
+  const maxX = max(...centroX)
+  const minX = min(...centroX)
+  const maxY = max(...centroY)
+  const minY = min(...centroY)
+  if (maxX > 5000) score += (maxX - 5000) * PENALTY
+  if (minX < 0) score += - minX * PENALTY
+  if (maxY > 5000) score += (maxY - 5000) * PENALTY
+  if (minY < 0) score += - minY * PENALTY
 
-  const dd = []
-  for (let i = 1; i < nVars / 2 + 3; i++) {
-    dd.push({
-      x: xp[i + 1] - xp[i],
-      y: yp[i + 1] - yp[i],
-    })
+  if(isNaN(score)) {
+    score = 1000000
   }
-  const coisa = dd.map(({ x, y }) => {
-    return sqrt(pow(x, 2) + pow(y, 2))
-  })
-  return score + max(coisa)
+  
+  return { score, collisionCount }
 }
 
 export default fitness

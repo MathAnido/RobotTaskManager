@@ -1,22 +1,23 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
-import './App.css'
+import { Route, Routes } from 'react-router'
 import PSOViewer from './Containers/PSOViewer/PSOViewer'
 import Trajetoria from './Containers/Trajetoria/Trajetoria'
-import TaskManager from './Containers/TaskManager/TaskManager'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { DndProvider } from 'react-dnd'
+import Layout from './Components/UI/Layout/Layout'
+import Home from './Containers/Home'
+
+import CssBaseline from '@mui/material/CssBaseline'
 
 function App() {
   return (
     <div className="App">
-      <DndProvider backend={HTML5Backend}>
-        <Switch>
-          <Route path="/" exact component={TaskManager} />
-          <Route path="/pso" component={PSOViewer} />
-          <Route path="/trajetoria" component={Trajetoria} />
-        </Switch>
-      </DndProvider>
+      <CssBaseline />
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/pso" element={<PSOViewer />} />
+          <Route path="/trajetoria" element={<Trajetoria/>} />
+          <Route index element={<Home/>}/>
+        </Route>
+      </Routes>
     </div>
   )
 }

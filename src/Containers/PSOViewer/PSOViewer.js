@@ -65,7 +65,7 @@ const PSOViewer = () => {
     do {
       //gBest.fitness = 999;
       for (let part of population) {
-        let partFit = fitness(part, pontoFinal)
+        let partFit = fitness(part, pontoFinal).score
         if (partFit <= part.pBest.fitness) {
           part.pBest.x = part.sx
           part.pBest.y = part.sy
@@ -103,7 +103,7 @@ const PSOViewer = () => {
     do {
       //gBest.fitness = 999;
       for (let part of population) {
-        let partFit = fitness(part, pontoFinal)
+        let partFit = fitness(part, pontoFinal).score
         if (partFit <= part.pBest.fitness) {
           part.pBest.x = part.sx
           part.pBest.y = part.sy
@@ -129,7 +129,7 @@ const PSOViewer = () => {
         //changePosition(part.id, part.sx, part.sy);
       }
       setPontos(population)
-    } while (fitness(pontos[0], pontoFinal) > 0.1)
+    } while (fitness(pontos[0], pontoFinal).score > 0.1)
   }
 
   let list = null 
